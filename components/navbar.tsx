@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,6 +37,14 @@ export function Navbar() {
   // Close mobile menu when clicking a link
   const handleLinkClick = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const openCalendly = () => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/steve-t-slaughter/30min",
+      });
+    }
   };
 
   // Prevent scroll when mobile menu is open
@@ -94,9 +110,7 @@ export function Navbar() {
 
             {/* CTA Button - Desktop */}
             <Button
-              data-cal-namespace="30min"
-              data-cal-link="sakshamsaraswat/30min"
-              data-cal-config='{"layout":"month_view"}'
+              onClick={openCalendly}
               className={`hidden md:inline-flex rounded-full px-6 h-10 text-sm font-medium transition-all duration-300 cursor-pointer ${
                 isScrolled
                   ? "bg-[#0B1B32] text-white hover:bg-[#132744]"
@@ -186,10 +200,10 @@ export function Navbar() {
           {/* CTA Button */}
           <div className="mt-8">
             <Button
-              onClick={handleLinkClick}
-              data-cal-namespace="30min"
-              data-cal-link="sakshamsaraswat/30min"
-              data-cal-config='{"layout":"month_view"}'
+              onClick={() => {
+                handleLinkClick();
+                openCalendly();
+              }}
               className="w-full rounded-full h-12 text-base font-medium bg-[#0B1B32] text-white hover:bg-[#132744] transition-all duration-300 cursor-pointer"
             >
               Book a discovery call

@@ -5,12 +5,28 @@ import { gsap } from "gsap";
 import { Button } from "./ui/button";
 import { DotWaveBackground } from "./dot-wave-background";
 
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+
+  const openCalendly = () => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/steve-t-slaughter/30min",
+      });
+    }
+  };
 
   useEffect(() => {
     if (hasAnimated) return;
@@ -76,9 +92,7 @@ export function Hero() {
 
           <div ref={ctaRef} className="mt-8 sm:mt-10">
             <Button
-              data-cal-namespace="30min"
-              data-cal-link="sakshamsaraswat/30min"
-              data-cal-config='{"layout":"month_view"}'
+              onClick={openCalendly}
               className="w-full sm:w-auto rounded-full h-12 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-medium bg-white text-[#0B1B32] hover:bg-[#38BDF8] transition-all duration-300 shadow-lg shadow-black/10 cursor-pointer"
             >
               Schedule a 30-minute intro call

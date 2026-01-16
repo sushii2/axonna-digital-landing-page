@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
-import { CalProvider } from "@/components/cal-provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -28,10 +28,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://assets.calendly.com/assets/external/widget.css"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className={`${dmSans.variable} ${instrumentSerif.variable} font-sans antialiased`}
       >
-        <CalProvider>{children}</CalProvider>
+        {children}
+        <Script
+          src="https://assets.calendly.com/assets/external/widget.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

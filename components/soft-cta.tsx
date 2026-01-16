@@ -4,11 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { Button } from "./ui/button";
 
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export function SoftCTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const lineLeftRef = useRef<HTMLDivElement>(null);
   const lineRightRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+
+  const openCalendly = () => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/steve-t-slaughter/30min",
+      });
+    }
+  };
 
   useEffect(() => {
     if (hasAnimated) return;
@@ -153,9 +169,7 @@ export function SoftCTA() {
 
           <div className="cta-button mt-10">
             <Button
-              data-cal-namespace="30min"
-              data-cal-link="sakshamsaraswat/30min"
-              data-cal-config='{"layout":"month_view"}'
+              onClick={openCalendly}
               className="rounded-full h-12 px-8 text-base font-medium bg-axonna-navy text-white hover:bg-axonna-navy-light transition-all duration-300 shadow-md shadow-axonna-navy/10 cursor-pointer"
             >
               Book a discovery call

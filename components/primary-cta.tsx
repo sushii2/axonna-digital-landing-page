@@ -5,10 +5,26 @@ import { gsap } from "gsap";
 import { Button } from "./ui/button";
 import { DotWaveBackground } from "./dot-wave-background";
 
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export function PrimaryCTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+
+  const openCalendly = () => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/steve-t-slaughter/30min",
+      });
+    }
+  };
 
   useEffect(() => {
     if (hasAnimated) return;
@@ -141,9 +157,7 @@ export function PrimaryCTA() {
             {/* Button */}
             <div className="primary-cta-button mt-8 sm:mt-12">
               <Button
-                data-cal-namespace="30min"
-                data-cal-link="sakshamsaraswat/30min"
-                data-cal-config='{"layout":"month_view"}'
+                onClick={openCalendly}
                 className="group relative w-full sm:w-auto rounded-full h-auto min-h-[48px] sm:min-h-[56px] py-3 sm:py-4 px-5 sm:px-10 text-sm sm:text-lg font-medium bg-white text-[#0B1B32] overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-[#38BDF8]/20 cursor-pointer"
               >
                 <span className="relative z-10 transition-colors duration-300 group-hover:text-[#0B1B32] whitespace-normal leading-tight">
